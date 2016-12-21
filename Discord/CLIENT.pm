@@ -43,7 +43,7 @@ sub new {
 sub send_message {
     my ( $self, $dest, $content ) = @_;
 
-    my $send_url = $self->{'base_url'} . "/channels/$dest/messages";
+    my $post_url = $self->{'base_url'} . "/channels/$dest/messages";
 
     my $tx = $self->{'ua'}->post(
         $post_url => { Accept => '*/*' } => json => { 'content' => $content }
@@ -52,4 +52,6 @@ sub send_message {
 
 sub delete_message {
     my( $self, $dest ) = @_;
+
+    my $post_url = $self->{'base_url'} . "/channels"
 }
