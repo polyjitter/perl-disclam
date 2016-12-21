@@ -3,6 +3,7 @@ package Discord::API;
 use strict;
 use warnings;
 
+use Try::Tiny;
 use Mojo::UserAgent;
 
 sub new {
@@ -37,4 +38,18 @@ sub new {
 
     bless $self, $class;
     return $self;
+}
+
+sub send_message {
+    my ( $self, $dest, $content ) = @_;
+
+    my $send_url = $self->{'base_url'} . "/channels/$dest/messages";
+
+    my $tx = $self->{'ua'}->post(
+        $post_url => { Accept => '*/*' } => json => { 'content' => $content }
+    );
+}
+
+sub delete_message {
+    my( $self, $dest ) = @_;
 }
