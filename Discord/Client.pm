@@ -5,6 +5,7 @@ use warnings;
 
 use Try::Tiny;
 use Mojo::UserAgent;
+use Mojo::JSON;
 
 sub new {
     my ( $class, %params ) = @_;
@@ -43,15 +44,31 @@ sub new {
 sub send_message {
     my ( $self, $dest, $content ) = @_;
 
+    if (exists $params{'tts'}) {
+        my $tts = $params{'tts'};
+    } else {
+        my $tts = Mojo::JSON::false
+    };
+
     my $post_url = $self->{'base_url'} . "/channels/$dest/messages";
 
-    my $tx = $self->{'ua'}->post(
-        $post_url => { Accept => '*/*' } => json => { 'content' => $content }
+    my $tx =
+      $self->{'ua'}->post(
+        $post_url => { Accept => '*/*' } => json => {
+            'content' => $content,
+            'tts'     => $tts
+        }
     );
 }
 
 sub delete_message {
-    my( $self, $dest ) = @_;
+    my ( $self, $dest, %messageid ) = @_;
 
-    my $post_url = $self->{'base_url'} . "/channels"
+    my $delete_url =
+      $self->{'base_url'} . "/channels/$dest/messages/$messageid";
+
+    my $tx =
+      $self->{'ua'}->delete( $delete_url );
 }
+
+1;

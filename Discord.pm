@@ -1,5 +1,3 @@
-#!/usr/bin/env perl
-
 package Discord;
 
 use strict;
@@ -37,3 +35,5 @@ sub new {
     bless $self, $class;
     return $self;
 }
+
+1;
